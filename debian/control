@@ -1,0 +1,16 @@
+Source: php-ipex-b2b
+Build-Depends: debhelper (>= 7.0.50~),php-apigen
+Standards-Version: 3.8.4
+Maintainer: Vítězslav Dvořák <info@vitexsoftware.cz>
+Uploaders: Vitex <vitex@hippy.cz>
+Priority: optional
+Homepage: https://github.com/VitexSoftware/php-primaERP
+
+Package: php-primaerp
+Depends: ${misc:Depends},php5-curl | php7.0-curl,ease-framework
+Suggests: composer,php-primaerp-doc
+Architecture: all
+Section: web
+Priority: optional
+Description: PHP Based primaERP RestAPI/Json library
+ Allow you perform read and write operations on primaERP

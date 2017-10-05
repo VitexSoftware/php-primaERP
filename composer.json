@@ -1,0 +1,35 @@
+{
+    "name": "vitexsoftware/primaerp",
+    "description": "PHP Based Library for easy interaction with primaERP api",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "Vítězslav Dvořák",
+            "email": "info@vitexsoftware.cz"
+        }
+    ],
+    "require": {
+        "php": ">= 7.0",
+        "ext-curl": "*",
+        "vitexsoftware/ease-framework": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "primaERP\\": "src/primaERP/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\Ease\\": "vendor/vitexsoftware/ease-framework/tests/src/Ease",
+            "Test\\primaERP\\": "testing/src/primaERP/",
+            "Test\\": "testing/"
+        }
+    },
+    "require-dev": {
+        "phpunit/php-token-stream": "~1.2",
+        "phpunit/phpunit": "5.3.*",
+        "phpunit/phpunit-skeleton-generator": "*",
+        "jakub-onderka/php-parallel-lint": "^0.9.2",
+        "jakub-onderka/php-console-highlighter": "^0.3.2"
+    }
+}

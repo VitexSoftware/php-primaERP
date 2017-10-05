@@ -1,0 +1,2 @@
+src/primaERP/*.php           /usr/share/php/primaERP
+debian/composer.json        /usr/share/php/primaERP

@@ -1,0 +1,10 @@
+/composer.lock
+/debian/php-ipex-b2b.debhelper.log
+/debian/revision
+/debian/version
+/vendor/
+/debian/debhelper-build-stamp
+/debian/files
+/debian/php-ipex-b2b.substvars
+/debian/php-ipex-b2b/
+/docs/
