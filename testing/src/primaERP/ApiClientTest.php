@@ -170,14 +170,11 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers primaERP\ApiClient::authentication
-     * @todo   Implement testAuthentication().
      */
     public function testAuthentication()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->authentication(); 
+        $this->assertNotEmpty($this->object->defaultUrlParams['token'] );
     }
 
     /**

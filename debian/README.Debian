@@ -3,5 +3,43 @@ PHP primaERP Debian
     
     Is installed by standard way in /usr/share/php/primaERP
 
+In this case add into composer.json of your application following:
+
+```json
+    "require": {
+        "ease-framework": "*"
+        "primaerp": "*",
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/usr/share/php/primaERP",
+            "options": {
+                "symlink": true
+            }
+        },
+        {
+            "type": "path",
+            "url": "/usr/share/php/Ease",
+            "options": {
+                "symlink": true
+            }
+        }
+    ]
+```
+
+Then you can see domething like:
+
+    Loading composer repositories with package information
+    Installing dependencies from lock file
+      - Installing ease-framework (1.1.3.3)
+        Symlinked from /usr/share/php/Ease
+
+      - Installing primaerp (0.2.1)
+        Symlinked from /usr/share/php/primaERP
+
+
+
+
  -- Vítězslav Dvořák <vitex@hippy.cz>  Ne říj 21 15:17:56 CEST 2017
 

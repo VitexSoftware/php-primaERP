@@ -1,4 +1,4 @@
-# Ipex-b2b
+# primaERP PHP Library
 
 PHP Library for easy interaction with [ABRA](https://www.abra.eu/)'s [primaERP](http://devdoc.primaerp.com/index.html)
 
@@ -69,40 +69,4 @@ Pro Linux jsou k dispozici .deb balíčky. Prosím použijte repo:
     aptitude update
     aptitude install php-primaerp
 
-V tomto případě je potřeba do souboru composer.json vaší aplikace přidat:
-
-```json
-    "require": {
-        "ease-framework": "*"
-        "primaerp": "*",
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "/usr/share/php/primaERP",
-            "options": {
-                "symlink": true
-            }
-        },
-        {
-            "type": "path",
-            "url": "/usr/share/php/Ease",
-            "options": {
-                "symlink": true
-            }
-        }
-    ]
-```
-
-Takže při instalaci závislostí bude vypadat nějak takto:
-
-    Loading composer repositories with package information
-    Installing dependencies from lock file
-      - Installing ease-framework (1.1.3.3)
-        Symlinked from /usr/share/php/Ease
-
-      - Installing primaerp (0.2.1)
-        Symlinked from /usr/share/php/primaERP
-
-A aktualizaci bude možné dělat globálně pro celý systém prostřednictvím apt-get.
 
