@@ -284,7 +284,7 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
      */
     public function testLogResult()
     {
-        $this->object->lastResult = ['code' => 'OK', 'message' => 'test'];
+        $this->object->lastResult = ['code' => 'OK', 'message' => 'test','description'=>'just test'];
         $this->object->logResult();
     }
 
