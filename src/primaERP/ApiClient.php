@@ -16,7 +16,7 @@ namespace primaERP;
 class ApiClient extends \Ease\Brick
 {
     /**
-     * Version of IPEXB2B library
+     * Version of php-primaerp library
      *
      * @var string
      */
@@ -98,11 +98,9 @@ class ApiClient extends \Ease\Brick
     /**
      * Default additional request url parameters after question mark
      *
-     * @link https://www.ipex.eu/api/dokumentace/ref/urls   Common params
-     * @link https://www.ipex.eu/api/dokumentace/ref/paging Paging params
      * @var array
      */
-    public $defaultUrlParams = ['limit' => 0];
+    public $defaultUrlParams = [];
 
     /**
      * Identifikační řetězec.
@@ -110,34 +108,6 @@ class ApiClient extends \Ease\Brick
      * @var string
      */
     public $init = null;
-
-    /**
-     * Sloupeček s názvem.
-     *
-     * @var string
-     */
-    public $nameColumn = 'nazev';
-
-    /**
-     * Sloupeček obsahující datum vložení záznamu do shopu.
-     *
-     * @var string
-     */
-    public $myCreateColumn = 'false';
-
-    /**
-     * Slopecek obsahujici datum poslení modifikace záznamu do shopu.
-     *
-     * @var string
-     */
-    public $myLastModifiedColumn = 'lastUpdate';
-
-    /**
-     * Klíčový idendifikátor záznamu.
-     *
-     * @var string
-     */
-    public $fbKeyColumn = 'id';
 
     /**
      * Informace o posledním HTTP requestu.
@@ -200,14 +170,6 @@ class ApiClient extends \Ease\Brick
      * @var int
      */
     public $rowCount = null;
-
-    /**
-     * Parmetry pro URL
-     * @link https://www.ipex.eu/api/dokumentace/ref/urls/ Všechny podporované parametry
-     * @var array
-     */
-    public $urlParams = [
-    ];
 
     /**
      * Save 404 results to log ?
@@ -357,31 +319,6 @@ class ApiClient extends \Ease\Brick
     }
 
     /**
-     * Převede rekurzivně v poli všechny objekty na jejich identifikátory.
-     *
-     * @param object|array $object
-     *
-     * @return array
-     */
-    public static function objectToID($object)
-    {
-        $resultID = null;
-        if (is_object($object)) {
-            $resultID = $object->__toString();
-        } else {
-            if (is_array($object)) {
-                foreach ($object as $item => $value) {
-                    $resultID[$item] = self::objectToID($value);
-                }
-            } else { //String
-                $resultID = $object;
-            }
-        }
-
-        return $resultID;
-    }
-
-    /**
      * Připraví data pro odeslání do FlexiBee
      *
      * @param string $data
@@ -463,7 +400,7 @@ class ApiClient extends \Ease\Brick
     public function authentication()
     {
         if (!is_null($this->tokener)) {
-                $this->defaultUrlParams['token'] = $this->getTokenString();
+            $this->defaultUrlParams['token'] = $this->getTokenString();
         }
     }
 
@@ -479,16 +416,20 @@ class ApiClient extends \Ease\Brick
     public function addUrlParams($url, $params, $override = false)
     {
         $urlParts = parse_url($url);
-        $urlFinal = $urlParts['scheme'].'://'.$urlParts['host'].$urlParts['path'];
-        if (isset($urlParts['query'])) {
+        $urlFinal = $urlParts['scheme'].'://'.$urlParts['host'];
+        if (array_key_exists('path', $urlParts)) {
+            $urlFinal .= $urlParts['path'];
+        }
+        if (array_key_exists('query', $urlParts)) {
             parse_str($urlParts['query'], $queryUrlParams);
             $urlParams = $override ? array_merge($params, $queryUrlParams) : array_merge($queryUrlParams,
                     $params);
         } else {
             $urlParams = $params;
         }
-
-        $urlFinal .= '?'.http_build_query($urlParams);
+        if (count($urlParams)) {
+            $urlFinal .= '?'.http_build_query($urlParams);
+        }
         return $urlFinal;
     }
 
@@ -630,32 +571,6 @@ class ApiClient extends \Ease\Brick
         return $this->lastResponseCode;
     }
 
-    /**
-     * Convert XML to array.
-     *
-     * @param string $xml
-     *
-     * @return array
-     */
-    public static function xml2array($xml)
-    {
-        $arr = [];
-
-        if (is_string($xml)) {
-            $xml = simplexml_load_string($xml);
-        }
-
-        foreach ($xml->children() as $r) {
-            if (count($r->children()) == 0) {
-                $arr[$r->getName()] = strval($r);
-            } else {
-                $arr[$r->getName()][] = self::xml2array($r);
-            }
-        }
-
-        return $arr;
-    }
-
     public function loadFromAPI($key)
     {
         return $this->takeData($this->requestData($key));
@@ -686,9 +601,7 @@ class ApiClient extends \Ease\Brick
         return $logResult;
     }
 
-
-
-        /**
+    /**
      * Current Token String
      *
      * @return string
@@ -697,7 +610,6 @@ class ApiClient extends \Ease\Brick
     {
         return $this->tokener->getTokenString();
     }
-
 
     /**
      * Set or get ignore not found pages flag
