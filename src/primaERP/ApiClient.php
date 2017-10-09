@@ -565,7 +565,7 @@ class ApiClient extends \Ease\Brick
         }
 
         if ($this->debug === true) {
-            $this->saveDebugFiles();
+//            $this->saveDebugFiles();
         }
 
         return $this->lastResponseCode;
@@ -627,7 +627,7 @@ class ApiClient extends \Ease\Brick
     }
 
     /**
-     * Odpojení od IPEX.
+     * Odpojení od primaERP.
      */
     public function disconnect()
     {

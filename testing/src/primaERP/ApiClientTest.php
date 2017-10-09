@@ -14,13 +14,12 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
      * @var ApiClient
      */
     protected $object;
-    
     public $clientConfig = [
-            'company' => 'vitexsoftware',
-            'url' => 'https://vitexsoftware.api.primaerp.com/',
-            'user' => 'info@vitexsoftware.cz',
-            'password' => 'erpjeprima',
-            'debug' => true];
+        'company' => 'vitexsoftware',
+        'url' => 'https://vitexsoftware.api.primaerp.com/',
+        'user' => 'info@vitexsoftware.cz',
+        'password' => 'erpjeprima',
+        'debug' => true];
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -28,8 +27,8 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new ApiClient();
-        $section   = $this->object->getSection();
+        $this->object                  = new ApiClient();
+        $section                       = $this->object->getSection();
         $this->clientConfig['section'] = $section;
     }
 
@@ -46,12 +45,12 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
     {
         $classname = get_class($this->object);
         // Get mock, without the constructor being called
-        $mock = $this->getMockBuilder($classname)
+        $mock      = $this->getMockBuilder($classname)
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $mock->__construct(1, ['debug' => false]);
 
-        $mock->__construct('',        $this->clientConfig            );
+        $mock->__construct('', $this->clientConfig);
     }
 
     /**
@@ -59,7 +58,7 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUp()
     {
-        $this->object->setUp();
+        $this->object->setUp(['section' => 'time']);
     }
 
     /**
@@ -68,43 +67,34 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
     public function testCurlInit()
     {
         $this->object->curlInit();
-        $this->assertInternalType('resource', $this->object->curl,'Eror initialising cURL');
+        $this->assertInternalType('resource', $this->object->curl,
+            'Eror initialising cURL');
     }
 
     /**
      * @covers primaERP\ApiClient::processInit
-     * @todo   Implement testProcessInit().
      */
     public function testProcessInit()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->processInit('1');
     }
 
     /**
      * @covers primaERP\ApiClient::setSection
-     * @todo   Implement testSetSection().
      */
     public function testSetSection()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->setSection('time');
+        $this->assertEquals('time', $this->object->getSection());
     }
 
     /**
      * @covers primaERP\ApiClient::getSection
-     * @todo   Implement testGetSection().
      */
     public function testGetSection()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->setSection('time');
+        $this->assertEquals('time', $this->object->getSection());
     }
 
     /**
@@ -137,38 +127,33 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers primaERP\ApiClient::getSectionURL
-     * @todo   Implement testGetSectionURL().
      */
     public function testGetSectionURL()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->setSection('test');
+        $this->assertEquals('https://vitexsoftware.api.primaerp.com/v1/test',
+            $this->object->getSectionURL());
     }
 
     /**
      * @covers primaERP\ApiClient::sectionUrlWithSuffix
-     * @todo   Implement testSectionUrlWithSuffix().
      */
     public function testSectionUrlWithSuffix()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->setSection('test');
+        $this->assertEquals('https://vitexsoftware.api.primaerp.com/v1/test/SomeParams',
+            $this->object->sectionUrlWithSuffix('SomeParams'));
     }
 
     /**
      * @covers primaERP\ApiClient::updateApiURL
-     * @todo   Implement testUpdateApiURL().
      */
     public function testUpdateApiURL()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->section = 'unknown';
+        $this->object->updateApiURL();
+        $this->assertEquals('https://vitexsoftware.api.primaerp.com/v1/unknown',
+            $this->object->apiURL);
     }
 
     /**
@@ -197,14 +182,12 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers primaERP\ApiClient::addUrlParams
-     * @todo   Implement testAddUrlParams().
      */
     public function testAddUrlParams()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals('http://vitexsoftware.cz/path?id=1&a=b',
+            $this->object->addUrlParams('http://vitexsoftware.cz/path?a=b',
+                ['id' => 1], TRUE));
     }
 
     /**
@@ -224,7 +207,9 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
      */
     public function testRawResponseToArray()
     {
-        $this->assertEquals(array(1, -2, 3.333, 4e17, "abc", "á\n", null, array(2.1, 2.2, array("2.2.1")), false, true, "", "key"=>"value", 'abc"def'=>array()) ,$this->object->rawResponseToArray('{
+        $this->assertEquals(array(1, -2, 3.333, 4e17, "abc", "á\n", null, array(
+                2.1, 2.2, array("2.2.1")), false, true, "", "key" => "value", 'abc"def' => array()),
+            $this->object->rawResponseToArray('{
     "0": 1,
     "1": -2,
     "2": 3.333,
@@ -275,14 +260,11 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers primaERP\ApiClient::doCurlRequest
-     * @todo   Implement testDoCurlRequest().
      */
     public function testDoCurlRequest()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->debug = true;
+        $this->object->doCurlRequest('http://nonexistent.comain.wtf', 'OPTIONS');
     }
 
     /**
@@ -299,73 +281,54 @@ class ApiClientTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers primaERP\ApiClient::logResult
-     * @todo   Implement testLogResult().
      */
     public function testLogResult()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->lastResult = ['code' => 'OK', 'message' => 'test'];
+        $this->object->logResult();
     }
 
     /**
      * @covers primaERP\ApiClient::getTokenString
-     * @todo   Implement testGetTokenString().
      */
     public function testGetTokenString()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertNotEmpty($this->object->getTokenString());
     }
 
     /**
      * @covers primaERP\ApiClient::ignore404
-     * @todo   Implement testIgnore404().
      */
     public function testIgnore404()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->ignore404(true);
+        $this->assertTrue($this->object->ignore404());
     }
 
     /**
      * @covers primaERP\ApiClient::disconnect
-     * @todo   Implement testDisconnect().
      */
     public function testDisconnect()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->disconnect();
+        $this->assertNull($this->object->curl);
     }
 
     /**
      * @covers primaERP\ApiClient::__wakeup
-     * @todo   Implement test__wakeup().
      */
     public function test__wakeup()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->__wakeup();
+        $this->testCurlInit();
     }
 
     /**
      * @covers primaERP\ApiClient::__destruct
-     * @todo   Implement test__destruct().
      */
     public function test__destruct()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->object->__destruct();
+        $this->testDisconnect();
     }
 }
